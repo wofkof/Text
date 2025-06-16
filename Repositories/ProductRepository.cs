@@ -27,7 +27,7 @@ namespace ProductApi.Repositories
             return await _db.QueryFirstOrDefaultAsync<Product>(sql, new { Id = id });
         }
 
-        // 新增商品（SQLite 版本）✅
+        // 新增商品（SQLite 版本）
         public async Task<Product> CreateAsync(Product product)
         {
             var sql = @"

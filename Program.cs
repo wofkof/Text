@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using ProductApi.Data;
 using ProductApi.Repositories;
 using System.Data;
+using ProductApi.Services;
 using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,12 @@ builder.Services.AddCors(options =>
 // 註冊 Controllers
 builder.Services.AddControllers();
 
+// 註冊自訂 Repository（Dapper）
+builder.Services.AddScoped<ProductRepository>();
+
+// 註冊 Services
+builder.Services.AddScoped<IProductService, ProductService>();
+
 // EF Core 用來建表（Migrations）
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=ProductApi.db"));
@@ -29,8 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IDbConnection>(sp =>
     new SqliteConnection("Data Source=ProductApi.db"));
 
-// 註冊自訂 Repository（Dapper）
-builder.Services.AddScoped<ProductRepository>();
+
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ProductApi.Models;
-using ProductApi.Repositories;
+using ProductApi.Dto;
+using ProductApi.Services;
 
 namespace ProductApi.Controllers
 {
@@ -8,57 +8,47 @@ namespace ProductApi.Controllers
     [Route("api/[controller]")]
     public class ProductController : ControllerBase
     {
-        private readonly ProductRepository _repo;
+        private readonly IProductService _service;
 
-        public ProductController(ProductRepository repo)
+        public ProductController(IProductService service)
         {
-            _repo = repo;
+            _service = service;
         }
 
-        // GET: api/Product
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAll()
         {
-            var products = await _repo.GetAllAsync();
-            return Ok(products);
+            return Ok(await _service.GetAllAsync());
         }
 
-        // GET: api/Product/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetById(int id)
+        public async Task<ActionResult<ProductDto>> GetById(int id)
         {
-            var product = await _repo.GetByIdAsync(id);
-            if (product == null)
-                return NotFound();
-
-            return Ok(product);
+            var result = await _service.GetByIdAsync(id);
+            return result == null ? NotFound() : Ok(result);
         }
 
-        // POST: api/Product
         [HttpPost]
-        public async Task<ActionResult<Product>> Create(Product product)
+        public async Task<ActionResult<ProductDto>> Create(CreateProductDto dto)
         {
-            var created = await _repo.CreateAsync(product);
-            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            var result = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        // PUT: api/Product/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Product product)
+        public async Task<IActionResult> Update(int id, UpdateProductDto dto)
         {
-            if (id != product.Id)
-                return BadRequest("ID 不一致");
+            if (id != dto.Id) return BadRequest("ID 不一致");
 
-            var updated = await _repo.UpdateAsync(product);
-            return updated ? NoContent() : NotFound();
+            var success = await _service.UpdateAsync(dto);
+            return success ? NoContent() : NotFound();
         }
 
-        // DELETE: api/Product/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _repo.DeleteAsync(id);
-            return deleted ? NoContent() : NotFound();
+            var success = await _service.DeleteAsync(id);
+            return success ? NoContent() : NotFound();
         }
     }
 }
