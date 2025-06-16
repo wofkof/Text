@@ -1,29 +1,44 @@
 using Microsoft.EntityFrameworkCore;
 using ProductApi.Data;
+using ProductApi.Repositories;
+using System.Data;
+using Microsoft.Data.Sqlite;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// CORS 設定
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-    policy =>
+    options.AddPolicy(name: MyAllowSpecificOrigins, policy =>
     {
         policy.WithOrigins("http://localhost:5173")
-        .AllowAnyHeader()
-        .AllowAnyMethod();
+            .AllowAnyHeader()
+            .AllowAnyMethod();
     });
 });
-builder.Services.AddControllers();      
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite("Data Source=ProductApi.db"));
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// 註冊 Controllers
+builder.Services.AddControllers();
+
+// EF Core 用來建表（Migrations）
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite("Data Source=ProductApi.db"));
+
+// Dapper 使用的連線（手動注入）
+builder.Services.AddScoped<IDbConnection>(sp =>
+    new SqliteConnection("Data Source=ProductApi.db"));
+
+// 註冊自訂 Repository（Dapper）
+builder.Services.AddScoped<ProductRepository>();
+
+// Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
 app.UseCors(MyAllowSpecificOrigins);
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,6 +48,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
+// 測試 GET Endpoint（可留可刪）
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -40,14 +56,14 @@ var summaries = new[]
 
 app.MapGet("/weatherforecast", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
+    var forecast = Enumerable.Range(1, 5).Select(index =>
         new WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
             Random.Shared.Next(-20, 55),
             summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
+        )).ToArray();
+
     return forecast;
 })
 .WithName("GetWeatherForecast")
