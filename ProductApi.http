@@ -7,7 +7,7 @@ Accept: application/json
 ###
 
 ### Get product by id
-GET {{ProductApi_HostAddress}}/api/Product/2
+GET {{ProductApi_HostAddress}}/api/Product/1
 Accept: application/json
 
 ###
@@ -17,8 +17,9 @@ POST {{ProductApi_HostAddress}}/api/Product
 Content-Type: application/json
 
 {
-  "name": "Test Product",
-  "price": 999
+  "name": "蘋果",
+  "price": 50,
+  "Description": "超甜的富士山蘋果"
 }
 
 ###

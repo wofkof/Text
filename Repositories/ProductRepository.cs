@@ -31,8 +31,8 @@ namespace ProductApi.Repositories
         public async Task<Product> CreateAsync(Product product)
         {
             var sql = @"
-                INSERT INTO Products (Name, Price)
-                VALUES (@Name, @Price);
+                INSERT INTO Products (Name, Price, Description)
+                VALUES (@Name, @Price, @Description);
                 SELECT last_insert_rowid();";
 
             var id = await _db.ExecuteScalarAsync<long>(sql, product);
@@ -45,7 +45,7 @@ namespace ProductApi.Repositories
         {
             var sql = @"
                 UPDATE Products
-                SET Name = @Name, Price = @Price
+                SET Name = @Name, Price = @Price, Description = @Description
                 WHERE Id = @Id;";
 
             var affected = await _db.ExecuteAsync(sql, product);

@@ -10,6 +10,10 @@
             <label for="price">價格：</label>
             <input id="price" v-model="product.price" required />
         </div>
+        <div>
+            <label for="description">描述</label>
+            <textarea id="description" v-model="product.description"></textarea>
+        </div>
         <button type="submit">送出</button>
 
         <p v-if="successMessage" style="color: green;">{{ successMessage }}</p>
@@ -25,7 +29,8 @@ import { createProduct } from "../api/productApi";
 const router = useRouter();
 const product = ref({
     name: "",
-    price: 0
+    price: 0,
+    description: ""
 })
 const successMessage = ref("");
 const submitForm = async () => { 

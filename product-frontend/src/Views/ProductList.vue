@@ -7,6 +7,7 @@
           <th>編號</th>
           <th>名稱</th>
           <th>價格</th>
+          <th>描述</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -15,6 +16,7 @@
           <td>{{ product.id }}</td>
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
+          <td>{{ product.description }}</td>
           <td>
             <button @click="productDetail(product.id)">查看</button>
             <button @click="editProduct(product.id)">編輯</button>

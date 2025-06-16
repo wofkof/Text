@@ -5,6 +5,7 @@
       <p><strong>編號：</strong>{{ product.id }}</p>
       <p><strong>名稱：</strong>{{ product.name }}</p>
       <p><strong>價格：</strong>{{ product.price }}</p>
+      <p><strong>描述:</strong>{{ product.description }}</p>
       <button @click="onClose">關閉</button>
     </div>
   </div>

@@ -11,6 +11,10 @@
         <input id="price" v-model="product.price" required />
       </div>
       <div>
+        <label for="description">描述:</label>
+        <textarea id="description" v-model="product.description"></textarea>
+      </div>
+      <div>
         <button type="submit">送出</button>
       </div>
     </form>
