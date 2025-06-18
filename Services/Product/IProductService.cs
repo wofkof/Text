@@ -11,5 +11,6 @@ namespace ProductApi.Services
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<ProductDto>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice);
         Task<IEnumerable<ProductWithCategoryDto>> GetWithCategoryAsync();
+        Task<IEnumerable<CategoryStatsDto>> GetCategoryStatsAsync();
     }
 }

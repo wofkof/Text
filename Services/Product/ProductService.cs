@@ -1,4 +1,3 @@
-using ProductApi.Models;
 using ProductApi.Dto;
 using ProductApi.Repositories;
 
@@ -15,8 +14,8 @@ namespace ProductApi.Services
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
         {
-            var products = await _repo.GetAllAsync();
-            return products.Select(p => new ProductDto
+            var raw = await _repo.GetAllAsync();
+            return raw.Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -28,53 +27,35 @@ namespace ProductApi.Services
 
         public async Task<ProductDto?> GetByIdAsync(int id)
         {
-            var product = await _repo.GetByIdAsync(id);
-            if (product == null) return null;
+            var p = await _repo.GetByIdAsync(id);
+            if (p == null) return null;
 
             return new ProductDto
             {
-                Id = product.Id,
-                Name = product.Name,
-                Price = product.Price,
-                Description = product.Description,
-                CategoryId = product.CategoryId
+                Id = p.Value.Id,
+                Name = p.Value.Name,
+                Price = p.Value.Price,
+                Description = p.Value.Description,
+                CategoryId = p.Value.CategoryId
             };
         }
 
         public async Task<ProductDto> CreateAsync(CreateProductDto dto)
         {
-            var product = new Product
+            var id = await _repo.CreateAsync(dto.Name, dto.Price, dto.Description, dto.CategoryId);
+            return new ProductDto
             {
+                Id = id,
                 Name = dto.Name,
                 Price = dto.Price,
                 Description = dto.Description,
                 CategoryId = dto.CategoryId
-            };
-
-            var created = await _repo.CreateAsync(product);
-
-            return new ProductDto
-            {
-                Id = created.Id,
-                Name = created.Name,
-                Price = created.Price,
-                Description = created.Description,
-                CategoryId = created.CategoryId
             };
         }
 
         public async Task<bool> UpdateAsync(UpdateProductDto dto)
         {
-            var product = new Product
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Price = dto.Price,
-                Description = dto.Description,
-                CategoryId = dto.CategoryId
-            };
-
-            return await _repo.UpdateAsync(product);
+            return await _repo.UpdateAsync(dto.Id, dto.Name, dto.Price, dto.Description, dto.CategoryId);
         }
 
         public async Task<bool> DeleteAsync(int id)
@@ -84,8 +65,8 @@ namespace ProductApi.Services
 
         public async Task<IEnumerable<ProductDto>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice)
         {
-            var products = await _repo.GetByPriceRangeAsync(minPrice, maxPrice);
-            return products.Select(p => new ProductDto
+            var raw = await _repo.GetByPriceRangeAsync(minPrice, maxPrice);
+            return raw.Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,
@@ -97,7 +78,27 @@ namespace ProductApi.Services
 
         public async Task<IEnumerable<ProductWithCategoryDto>> GetWithCategoryAsync()
         {
-            return await _repo.GetWithCategoryAsync();
+            var raw = await _repo.GetWithCategoryAsync();
+            return raw.Select(p => new ProductWithCategoryDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price,
+                Description = p.Description,
+                CategoryId = p.CategoryId,
+                CategoryName = p.CategoryName
+            });
+        }
+
+        public async Task<IEnumerable<CategoryStatsDto>> GetCategoryStatsAsync()
+        {
+            var raw = await _repo.GetCategoryStatsAsync();
+            return raw.Select(r => new CategoryStatsDto
+            {
+                Id = r.Id,
+                CategoryName = r.Name,
+                ProductCount = r.ProductCount
+            });
         }
     }
 }

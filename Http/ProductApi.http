@@ -17,9 +17,9 @@ POST {{ProductApi_HostAddress}}/api/Product
 Content-Type: application/json
 
 {
-  "name": "胡蘿蔔",
-  "price": 50,
-  "Description": "超大條胡蘿蔔",
+  "name": "高麗菜",
+  "price": 150,
+  "Description": "超大顆高麗菜",
   "CategoryId": 2
 }
 
@@ -49,3 +49,8 @@ GET {{ProductApi_HostAddress}}/api/Product/search?minPrice=100&maxPrice=500
 
 ### Search product
 GET {{ProductApi_HostAddress}}/api/Product/category
+
+###
+
+### Stats product
+GET  {{ProductApi_HostAddress}}/api/Product/stats

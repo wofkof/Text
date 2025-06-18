@@ -66,5 +66,12 @@ namespace ProductApi.Controllers
             var result = await _service.GetWithCategoryAsync();
             return Ok(result);
         }
+
+        [HttpGet("stats")]
+        public async Task<ActionResult<IEnumerable<CategoryStatsDto>>> GetCategoryStats()
+        { 
+            var result = await _service.GetCategoryStatsAsync();
+            return Ok(result);
+        }
     }
 }
