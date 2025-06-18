@@ -8,6 +8,7 @@
           <th>名稱</th>
           <th>價格</th>
           <th>描述</th>
+          <th>分類</th>
           <th>操作</th>
         </tr>
       </thead>
@@ -17,6 +18,7 @@
           <td>{{ product.name }}</td>
           <td>{{ product.price }}</td>
           <td>{{ product.description }}</td>
+          <td>{{ product.categoryName }}</td>
           <td>
             <button @click="productDetail(product.id)">查看</button>
             <button @click="editProduct(product.id)">編輯</button>
@@ -32,7 +34,7 @@
 <script setup>
 import ProductDetailModal from '../components/ProductDetailModal.vue';
 import { ref, onMounted } from 'vue';
-import { getAllProducts, deleteProduct, getProductById } from '../api/productApi';
+import { getAllProducts, deleteProduct, getProductById, getWithCategory } from '../api/productApi';
 import { useRouter } from 'vue-router';
 const products = ref([]);
 const router = useRouter();
@@ -45,7 +47,7 @@ const editProduct = (id) => {
 
 const loadProducts = async () => {
   try {
-    const response = await getAllProducts();
+    const response = await getWithCategory();
     console.log("全部商品：", response.data);
     products.value = response.data;
   } catch (error) {

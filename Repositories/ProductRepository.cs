@@ -32,8 +32,8 @@ namespace ProductApi.Repositories
         public async Task<Product> CreateAsync(Product product)
         {
             var sql = @"
-                INSERT INTO Products (Name, Price, Description)
-                VALUES (@Name, @Price, @Description);
+                INSERT INTO Products (Name, Price, Description, CategoryId)
+                VALUES (@Name, @Price, @Description, @CategoryId);
                 SELECT last_insert_rowid();";
 
             var id = await _db.ExecuteScalarAsync<long>(sql, product);
@@ -46,7 +46,7 @@ namespace ProductApi.Repositories
         {
             var sql = @"
                 UPDATE Products
-                SET Name = @Name, Price = @Price, Description = @Description
+                SET Name = @Name, Price = @Price, Description = @Description, CategoryId = @CategoryId
                 WHERE Id = @Id;";
 
             var affected = await _db.ExecuteAsync(sql, product);
@@ -72,7 +72,7 @@ namespace ProductApi.Repositories
         public async Task<IEnumerable<ProductWithCategoryDto>> GetWithCategoryAsync()
         {
             var sql = @"
-                SELECT p.Id, p.Name, p.Price, p.Description, c.Name AS CategoryName
+                SELECT p.Id, p.Name, p.Price, p.Description, p.CategoryId, c.Name AS CategoryName
                 FROM Products p
                 JOIN Categories c ON p.CategoryId = c.Id";
             var result = await _db.QueryAsync<ProductWithCategoryDto>(sql);

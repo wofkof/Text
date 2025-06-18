@@ -21,7 +21,8 @@ namespace ProductApi.Services
                 Id = p.Id,
                 Name = p.Name,
                 Price = p.Price,
-                Description = p.Description
+                Description = p.Description,
+                CategoryId = p.CategoryId
             });
         }
 
@@ -35,7 +36,8 @@ namespace ProductApi.Services
                 Id = product.Id,
                 Name = product.Name,
                 Price = product.Price,
-                Description = product.Description
+                Description = product.Description,
+                CategoryId = product.CategoryId
             };
         }
 
@@ -45,7 +47,8 @@ namespace ProductApi.Services
             {
                 Name = dto.Name,
                 Price = dto.Price,
-                Description = dto.Description
+                Description = dto.Description,
+                CategoryId = dto.CategoryId
             };
 
             var created = await _repo.CreateAsync(product);
@@ -55,7 +58,8 @@ namespace ProductApi.Services
                 Id = created.Id,
                 Name = created.Name,
                 Price = created.Price,
-                Description = created.Description
+                Description = created.Description,
+                CategoryId = created.CategoryId
             };
         }
 
@@ -66,7 +70,8 @@ namespace ProductApi.Services
                 Id = dto.Id,
                 Name = dto.Name,
                 Price = dto.Price,
-                Description = dto.Description
+                Description = dto.Description,
+                CategoryId = dto.CategoryId
             };
 
             return await _repo.UpdateAsync(product);
@@ -84,7 +89,9 @@ namespace ProductApi.Services
             {
                 Id = p.Id,
                 Name = p.Name,
-                Price = p.Price
+                Price = p.Price,
+                Description = p.Description,
+                CategoryId = p.CategoryId
             });
         }
 

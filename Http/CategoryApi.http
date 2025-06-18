@@ -17,18 +17,18 @@ POST {{ProductApi_HostAddress}}/api/Category
 Content-Type: application/json
 
 {
-  "name": "水果"
+  "name": "電子"
 }
 
 ###
 
 ### Update category
-PUT {{ProductApi_HostAddress}}/api/Category/1
+PUT {{ProductApi_HostAddress}}/api/Category/2
 Content-Type: application/json
 
 {
-  "id": 1,
-  "name": "Updated Category",
+  "id": 2,
+  "name": "食材"
 }
 
 ###
