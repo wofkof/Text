@@ -76,5 +76,21 @@ namespace ProductApi.Services
         {
             return await _repo.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<ProductDto>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice)
+        {
+            var products = await _repo.GetByPriceRangeAsync(minPrice, maxPrice);
+            return products.Select(p => new ProductDto
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Price = p.Price
+            });
+        }
+
+        public async Task<IEnumerable<ProductWithCategoryDto>> GetWithCategoryAsync()
+        {
+            return await _repo.GetWithCategoryAsync();
+        }
     }
 }

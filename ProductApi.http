@@ -17,9 +17,9 @@ POST {{ProductApi_HostAddress}}/api/Product
 Content-Type: application/json
 
 {
-  "name": "蘋果",
-  "price": 50,
-  "Description": "超甜的富士山蘋果"
+  "name": "水蜜桃",
+  "price": 350,
+  "Description": "超多汁水蜜桃"
 }
 
 ###
@@ -38,3 +38,8 @@ Content-Type: application/json
 
 ### Delete product
 DELETE {{ProductApi_HostAddress}}/api/Product/4
+
+###
+
+### Search product
+GET {{ProductApi_HostAddress}}/api/Product/search?minPrice=100&maxPrice=500

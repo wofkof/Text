@@ -20,4 +20,9 @@ namespace ProductApi.Dto
         public int Price { get; set; }
         public string Description { get; set; } = "";
     }
+
+    public class ProductWithCategoryDto : ProductDto
+    {
+        public string CategoryName { get; set; } = "";
+    }
 }

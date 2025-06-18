@@ -1,0 +1,38 @@
+@ProductApi_HostAddress = http://localhost:5274
+
+### Get all category
+GET {{ProductApi_HostAddress}}/api/Category
+Accept: application/json
+
+###
+
+### Get category by id
+GET {{ProductApi_HostAddress}}/api/Category/1
+Accept: application/json
+
+###
+
+### Create category
+POST {{ProductApi_HostAddress}}/api/Category
+Content-Type: application/json
+
+{
+  "name": "水果"
+}
+
+###
+
+### Update category
+PUT {{ProductApi_HostAddress}}/api/Category/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Updated Category",
+}
+
+###
+
+### Delete category
+DELETE {{ProductApi_HostAddress}}/api/Category/1
+

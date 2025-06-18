@@ -24,9 +24,10 @@ builder.Services.AddControllers();
 
 // 註冊自訂 Repository（Dapper）
 builder.Services.AddScoped<ProductRepository>();
-
+builder.Services.AddScoped<CategoryRepository>();
 // 註冊 Services
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // EF Core 用來建表（Migrations）
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

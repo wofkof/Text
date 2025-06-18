@@ -1,4 +1,5 @@
 using Dapper;
+using ProductApi.Dto;
 using ProductApi.Models;
 using System.Data;
 
@@ -58,6 +59,24 @@ namespace ProductApi.Repositories
             var sql = "DELETE FROM Products WHERE Id = @Id;";
             var affected = await _db.ExecuteAsync(sql, new { Id = id });
             return affected > 0;
+        }
+
+        // 查詢特定價格範圍的商品
+        public async Task<IEnumerable<Product>> GetByPriceRangeAsync(decimal minPrice, decimal maxPrice)
+        {
+            var sql = "SELECT * FROM Products WHERE Price BETWEEN @MinPrice AND @MaxPrice";
+            return await _db.QueryAsync<Product>(sql, new { MinPrice = minPrice, MaxPrice = maxPrice });
+        }
+
+        // 顯示分類名稱
+        public async Task<IEnumerable<ProductWithCategoryDto>> GetWithCategoryAsync()
+        {
+            var sql = @"
+                SELECT p.Id, p.Name, p.Price, p.Description, c.Name AS CategoryName
+                FROM Products p
+                JOIN Categories c ON p.CategoryId = c.Id";
+            var result = await _db.QueryAsync<ProductWithCategoryDto>(sql);
+            return result;
         }
     }
 }
